@@ -78,7 +78,7 @@
 
 ## Phase tracker
 - [x] Phase 1 Brain: LM Studio server running, tests/test_llm_connection.py passes
-- [ ] Phase 2 Voice: speech in (external mic) and out on the Galaxy A07 (4 GB / 64 GB) via Termux:API
+- [x] Phase 2 Voice: speech in (external mic) and out on the Galaxy A07 (4 GB / 64 GB) via Termux:API + Standby Mode ('Rise and shine ZMO' wake word & 'Sleep off ZMO' sleep cycle implemented)
 - [ ] Phase 3 Face: face page full-screen on the A07, reacts to /state
 - [x] Phase 4 Electronics: Skipped / N/A (`ESP32_ENABLED=false`; phone-only build without ESP32 or servos)
 - [ ] Phase 5 Shell: prototype box done, Blender model, final print
