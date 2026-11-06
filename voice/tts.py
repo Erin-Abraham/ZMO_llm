@@ -101,23 +101,30 @@ def _speak_laptop_pyttsx3(
         return False
 
 
+def _prepare_pronunciation(text: str) -> str:
+    """Map robot acronym 'ZMO' to phonetic 'Zeemo' so TTS engines speak it properly."""
+    import re
+    return re.sub(r"\bZMO\b", "Zeemo", text, flags=re.IGNORECASE)
+
+
 def speak(
     text: str,
     pitch: float = settings.TTS_PITCH,
     rate: float = settings.TTS_RATE,
     timeout: float = settings.TTS_TIMEOUT,
 ) -> bool:
-    """Speak `text` with BMO's voice settings and return True if audio played."""
+    """Speak `text` with ZMO's voice settings and return True if audio played."""
     cleaned = text.strip()
     if not cleaned:
         return False
 
-    print(f"BMO: {cleaned}")
+    print(f"ZMO: {cleaned}")
+    spoken_text = _prepare_pronunciation(cleaned)
 
     if is_termux_tts_available():
-        return _speak_termux(cleaned, pitch=pitch, rate=rate, timeout=timeout)
+        return _speak_termux(spoken_text, pitch=pitch, rate=rate, timeout=timeout)
 
     if sys.platform == "win32":
-        return _speak_laptop_pyttsx3(cleaned, pitch=pitch, rate=rate, timeout=timeout)
+        return _speak_laptop_pyttsx3(spoken_text, pitch=pitch, rate=rate, timeout=timeout)
 
     return False

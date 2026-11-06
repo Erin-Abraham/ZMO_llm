@@ -169,11 +169,11 @@ USE_TEXT_INPUT: bool = os.getenv("USE_TEXT_INPUT", "false").strip().lower() in (
 
 
 def load_system_prompt() -> str:
-    """Read and return the BMO persona system prompt from `config/bmo_system_prompt.txt`."""
+    """Read and return the ZMO persona system prompt from `config/bmo_system_prompt.txt`."""
     if SYSTEM_PROMPT_PATH.is_file():
         return SYSTEM_PROMPT_PATH.read_text(encoding="utf-8").strip()
     return (
-        "You are BMO, a small, cheerful, loving robot from Adventure Time. "
+        "You are ZMO (pronounced Zeemo), a small, cheerful, loving robot inspired by BMO from Adventure Time. "
         "Keep every reply to 2 or 3 short sentences. "
         "Begin every reply with one emotion tag in square brackets, chosen from: "
         "[happy] [excited] [thinking] [sad] [sleepy] [surprised] [neutral]"

@@ -96,10 +96,10 @@ def run_single_turn(
         "exit",
     )
     if any(phrase in cleaned_input for phrase in sleep_phrases):
-        print(f"[bmo] Sleep/exit command recognized: '{user_text.strip()}'")
+        print(f"[zmo] Sleep/exit command recognized: '{user_text.strip()}'")
         update_face_state(state="talking", emotion="sleepy", mode=current_mode)
         trigger_servo_gesture("wave")
-        tts.speak("Night night friend! BMO is powering down to sleep. Rise and shine whenever you need me! Beep boop.")
+        tts.speak("Night night friend! ZMO is powering down to sleep. Rise and shine whenever you need me! Beep boop.")
         update_face_state(state="idle", emotion="sleepy", mode=current_mode)
         return False, "sleepy"
 
@@ -124,8 +124,8 @@ def run_single_turn(
 
 
 def main() -> int:
-    """Entry point for the BMO brain loop."""
-    parser = argparse.ArgumentParser(description="Run the BMO robot brain loop.")
+    """Entry point for the ZMO brain loop."""
+    parser = argparse.ArgumentParser(description="Run the ZMO robot brain loop.")
     parser.add_argument(
         "--text",
         action="store_true",
@@ -142,7 +142,7 @@ def main() -> int:
     backend, initial_announcement = router.select_backend()
     initial_mode = "laptop" if backend == "lmstudio" else "offline"
 
-    print(f"[bmo] Starting BMO brain (active backend: {backend}). Type 'quit' to stop.")
+    print(f"[zmo] Starting ZMO brain (active backend: {backend}). Say 'Sleep off ZMO' to stop.")
     update_face_state(state="idle", emotion="happy", mode=initial_mode)
     trigger_servo_gesture("wave")
 
@@ -166,7 +166,7 @@ def main() -> int:
             if not keep_going or args.once:
                 break
     except KeyboardInterrupt:
-        print("\n[bmo] Shutting down BMO brain. Beep boop!")
+        print("\n[zmo] Shutting down ZMO brain. Beep boop!")
         update_face_state(state="idle", emotion="sleepy", mode=initial_mode)
 
     return 0
