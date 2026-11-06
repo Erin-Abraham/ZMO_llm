@@ -80,10 +80,26 @@ def run_single_turn(
         update_face_state(state="idle", emotion=last_emotion, mode=current_mode)
         return True, last_emotion
 
-    if user_text.strip().lower() in {"quit", "exit", "bye bmo", "goodbye bmo"}:
-        update_face_state(state="talking", emotion="happy", mode=current_mode)
+    cleaned_input = "".join(c for c in user_text.lower() if c.isalnum() or c.isspace()).strip()
+    sleep_phrases = (
+        "sleep off zmo",
+        "sleep off bmo",
+        "sleep off",
+        "sleep zmo",
+        "sleep bmo",
+        "go to sleep",
+        "bye bmo",
+        "bye zmo",
+        "goodbye bmo",
+        "goodbye zmo",
+        "quit",
+        "exit",
+    )
+    if any(phrase in cleaned_input for phrase in sleep_phrases):
+        print(f"[bmo] Sleep/exit command recognized: '{user_text.strip()}'")
+        update_face_state(state="talking", emotion="sleepy", mode=current_mode)
         trigger_servo_gesture("wave")
-        tts.speak("Bye bye friend! BMO will be right here waiting for our next adventure!")
+        tts.speak("Night night friend! BMO is powering down to sleep. Rise and shine whenever you need me! Beep boop.")
         update_face_state(state="idle", emotion="sleepy", mode=current_mode)
         return False, "sleepy"
 

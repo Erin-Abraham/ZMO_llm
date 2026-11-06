@@ -30,23 +30,37 @@ def _speak_termux(
     rate: float,
     timeout: float,
 ) -> bool:
-    """Speak `text` using `termux-tts-speak -p <pitch> -r <rate>` with a timeout."""
+    """Speak `text` using `termux-tts-speak` with a timeout, with fallback if pitch flags fail."""
+    cmd_with_flags = [
+        "termux-tts-speak",
+        "-p",
+        f"{pitch:.2f}",
+        "-r",
+        f"{rate:.2f}",
+        text,
+    ]
     try:
         completed = subprocess.run(
-            [
-                "termux-tts-speak",
-                "-p",
-                f"{pitch:.2f}",
-                "-r",
-                f"{rate:.2f}",
-                text,
-            ],
+            cmd_with_flags,
             capture_output=True,
             text=True,
             timeout=timeout,
             check=False,
         )
-        return completed.returncode == 0
+        if completed.returncode == 0:
+            return True
+        # If Samsung TTS rejected the -p or -r arguments, try plain termux-tts-speak
+        print(f"[tts] termux-tts-speak with pitch flags returned code {completed.returncode}. Retrying default...")
+        fallback = subprocess.run(
+            ["termux-tts-speak", text],
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=False,
+        )
+        if fallback.returncode != 0 and fallback.stderr:
+            print(f"[tts] termux-tts-speak error: {fallback.stderr.strip()}")
+        return fallback.returncode == 0
     except subprocess.TimeoutExpired:
         print(f"[tts] termux-tts-speak timed out after {timeout:.1f}s.")
         return False
