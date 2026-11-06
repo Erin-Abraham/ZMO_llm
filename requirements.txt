@@ -1,0 +1,14 @@
+# ============================================================================
+# BMO Robot Project - Python Dependencies
+# Always install inside a virtual environment:
+#   python -m venv .venv
+#   .venv\Scripts\activate      (Windows)
+#   source .venv/bin/activate   (Termux / Linux)
+#   pip install -r requirements.txt
+# ============================================================================
+
+# --- Shared dependencies (Windows Laptop + Termux on Galaxy A07) ---
+requests>=2.31.0
+
+# --- Laptop-only dependencies (Windows testing only; pyttsx3 does NOT work on Android/Termux) ---
+pyttsx3>=2.90; sys_platform == "win32"

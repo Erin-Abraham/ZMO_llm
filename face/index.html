@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#5bc2b4" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>BMO Face</title>
+  <link rel="stylesheet" href="face.css" />
+</head>
+<body class="state-idle emotion-happy mode-laptop">
+  <main id="bmo-shell" title="Tap to toggle fullscreen">
+    <section id="bmo-screen" aria-label="BMO Face Display">
+      <!-- Offline indicator dot in top-right corner when laptop is unreachable -->
+      <div id="offline-dot" title="Running on local Termux brain (laptop offline)"></div>
+
+      <!-- Listening / Thinking subtle badge -->
+      <div id="state-indicator" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+
+      <!-- BMO Face Feature Canvas -->
+      <div id="face-container">
+        <div class="eyes-row">
+          <div class="eye left-eye" id="left-eye">
+            <div class="sparkle"></div>
+          </div>
+          <div class="eye right-eye" id="right-eye">
+            <div class="sparkle"></div>
+          </div>
+        </div>
+
+        <div class="cheeks-row">
+          <div class="blush left-blush"></div>
+          <div class="mouth-wrapper">
+            <div class="mouth" id="mouth">
+              <div class="tongue"></div>
+            </div>
+          </div>
+          <div class="blush right-blush"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decorative lower BMO front panel details for vertical 20:9 phone -->
+    <footer id="bmo-controls" aria-hidden="true">
+      <div class="slot-row">
+        <div class="floppy-slot"></div>
+        <div class="status-led" id="power-led"></div>
+      </div>
+      <div class="controls-row">
+        <div class="dpad">
+          <div class="dpad-v"></div>
+          <div class="dpad-h"></div>
+        </div>
+        <div class="action-buttons">
+          <div class="btn-triangle"></div>
+          <div class="btn-circle red"></div>
+          <div class="btn-circle green"></div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script src="face.js"></script>
+</body>
+</html>

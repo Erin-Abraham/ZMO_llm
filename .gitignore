@@ -1,0 +1,26 @@
+# Secrets and local environment configuration (NEVER commit secrets!)
+.env
+*.env.local
+firmware/esp32_c3_servos/secrets.h
+**/secrets.h
+
+# Proposed rewrites from audit
+*.proposed
+
+# Python bytecode and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Wake-word training datasets and outputs
+data/
+output/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

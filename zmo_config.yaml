@@ -1,0 +1,8 @@
+model_name: "wake_up_zmo"
+target_phrases:
+  - "wake up zmo"
+n_samples: 10000
+model:
+  model_type: "conv_attention"
+  model_size: "medium"
+steps: 30000
