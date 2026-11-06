@@ -39,7 +39,7 @@ def listen_termux(timeout: float = settings.STT_TIMEOUT) -> str:
         if completed.returncode == 0:
             return completed.stdout.strip()
     except subprocess.TimeoutExpired:
-        print(f"[stt] termux-speech-to-text timed out after {timeout:.1f}s.")
+        return ""
     except OSError as exc:
         print(f"[stt] termux-speech-to-text failed: {exc}")
     return ""

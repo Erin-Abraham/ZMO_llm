@@ -123,6 +123,56 @@ def run_single_turn(
     return True, result.emotion
 
 
+WAKE_WORDS = (
+    "rise and shine zmo",
+    "rise and shine zeemo",
+    "rise and shine",
+    "wake up zmo",
+    "wake up zeemo",
+    "wake up",
+)
+
+
+def wait_for_wake_word(
+    use_text_input: bool = False,
+    mode: str = "laptop",
+) -> bool:
+    """Listen in low-power standby mode until a wake phrase like 'Rise and shine ZMO' is heard."""
+    update_face_state(state="idle", emotion="sleepy", mode=mode)
+    print("\n[zmo] ZMO is sleeping in Standby Mode.")
+    print("      Say 'Rise and shine ZMO' or 'Wake up ZMO' to wake me up! (or 'quit' to exit)")
+
+    prompt = "Standby (say 'Rise and shine ZMO'): "
+    while True:
+        try:
+            user_text = (
+                stt.listen_text_fallback(prompt=prompt)
+                if use_text_input
+                else stt.listen(timeout=settings.STT_TIMEOUT, use_text_fallback=False)
+            )
+            if not user_text:
+                continue
+
+            cleaned = "".join(c for c in user_text.lower() if c.isalnum() or c.isspace()).strip()
+
+            if cleaned in ("quit", "exit", "shutdown"):
+                print("[zmo] Complete shutdown requested.")
+                return False
+
+            if any(w in cleaned for w in WAKE_WORDS):
+                print(f"[zmo] Wake phrase detected: '{user_text.strip()}' -> Waking up!")
+                update_face_state(state="talking", emotion="excited", mode=mode)
+                trigger_servo_gesture("wave")
+                tts.speak("Rise and shine! ZMO is wide awake and ready to play! Beep boop.")
+                update_face_state(state="idle", emotion="happy", mode=mode)
+                return True
+        except (KeyboardInterrupt, SystemExit):
+            print("\n[zmo] Standby interrupted.")
+            return False
+        except Exception as exc:
+            print(f"[zmo] Standby listener error: {exc}")
+
+
 def main() -> int:
     """Entry point for the ZMO brain loop."""
     parser = argparse.ArgumentParser(description="Run the ZMO robot brain loop.")
@@ -136,17 +186,23 @@ def main() -> int:
         action="store_true",
         help="Run a single turn and exit (useful for testing).",
     )
+    parser.add_argument(
+        "--standby",
+        action="store_true",
+        help="Start directly in sleeping standby mode waiting for 'Rise and shine ZMO'.",
+    )
     args = parser.parse_args()
 
     router = LLMRouter()
     backend, initial_announcement = router.select_backend()
     initial_mode = "laptop" if backend == "lmstudio" else "offline"
+    use_text = args.text or settings.USE_TEXT_INPUT
 
-    print(f"[zmo] Starting ZMO brain (active backend: {backend}). Say 'Sleep off ZMO' to stop.")
+    print(f"[zmo] Starting ZMO brain (active backend: {backend}).")
     update_face_state(state="idle", emotion="happy", mode=initial_mode)
     trigger_servo_gesture("wave")
 
-    if initial_announcement:
+    if initial_announcement and not args.standby:
         update_face_state(state="talking", emotion="happy", mode=initial_mode)
         tts.speak(initial_announcement)
         update_face_state(
@@ -156,15 +212,28 @@ def main() -> int:
         )
 
     last_emotion = "happy"
+    in_standby = args.standby
+
     try:
         while True:
+            if in_standby:
+                woke_up = wait_for_wake_word(use_text_input=use_text, mode=initial_mode)
+                if not woke_up:
+                    break
+                in_standby = False
+                last_emotion = "happy"
+
             keep_going, last_emotion = run_single_turn(
                 router=router,
-                use_text_input=args.text or settings.USE_TEXT_INPUT,
+                use_text_input=use_text,
                 last_emotion=last_emotion,
             )
-            if not keep_going or args.once:
+            if args.once:
                 break
+            if not keep_going:
+                # User said "Sleep off ZMO" -> transition back to sleeping Standby Mode!
+                print("[zmo] Transitioning to Standby Mode...")
+                in_standby = True
     except KeyboardInterrupt:
         print("\n[zmo] Shutting down ZMO brain. Beep boop!")
         update_face_state(state="idle", emotion="sleepy", mode=initial_mode)

@@ -44,10 +44,10 @@ nohup python "${PROJECT_DIR}/face/face_server.py" >"${PROJECT_DIR}/face_server.l
 sleep 1
 
 echo "============================================================"
-echo "  BMO Face server is live at: http://localhost:8080"
+echo "  ZMO Face server is live at: http://localhost:8080"
 echo "  MANUAL STEP: Open Chrome on the phone to http://localhost:8080"
-echo "  and tap the BMO face to enter full-screen mode."
+echo "  and tap the ZMO face to enter full-screen mode."
 echo "============================================================"
 
-echo "[BMO] Starting BMO Brain main loop..."
-python "${PROJECT_DIR}/brain/bmo_brain.py"
+echo "[ZMO] Starting ZMO in Standby Mode (listening for 'Rise and shine ZMO')..."
+python "${PROJECT_DIR}/brain/bmo_brain.py" --standby "$@"
