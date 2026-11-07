@@ -42,26 +42,18 @@ bmo-robot/
 │   ├── stt.py                     # Speech to text (Termux:API on phone, input() fallback)
 │   └── tts.py                     # Text to speech (termux-tts-speak on phone, pyttsx3 on laptop)
 ├── face/
-│   ├── index.html                 # Animated BMO face, 20:9 portrait layout
+│   ├── index.html                 # Animated ZMO face, 20:9 portrait layout
 │   ├── face.css
 │   ├── face.js                    # States + emotions, polls GET /state every 300 ms
 │   └── face_server.py             # Tiny HTTP server: serves face, exposes GET/POST /state
-├── firmware/
-│   └── esp32_c3_servos/
-│       ├── esp32_c3_servos.ino    # Non-blocking servo control + gestures over WiFi HTTP (serial optional)
-│       └── secrets.h.example      # WiFi SSID and password template (copy to secrets.h)
 ├── termux/
 │   ├── setup_termux.sh            # One-shot phone setup script
-│   └── start_bmo.sh               # Launched by Termux:Boot
-├── hardware/
-│   ├── parts_list.md              # Chosen parts and Indian sources
-│   └── wiring.md                  # ESP32-C3 to SG90 servos + power wiring
+│   └── start_bmo.sh               # Launched by Termux:Boot with --standby wake-word loop
 ├── cad/
-│   └── dimensions.md              # Galaxy A07 slot and SG90 pocket dimensions for Blender
+│   └── dimensions.md              # Galaxy A07 slot and mic clearance for Blender
 ├── tests/
 │   ├── test_llm_connection.py     # Pings LM Studio and Ollama, prints which is live
-│   ├── test_router_fallback.py    # Simulates laptop offline, verifies Ollama fallback
-│   └── test_servo_http.py         # Sends each gesture to the ESP32 over HTTP
+│   └── test_router_fallback.py    # Simulates laptop offline, verifies Ollama fallback
 └── docs/
     └── build_log.md               # Builder's log template
 ```
@@ -76,7 +68,6 @@ Copy `.env.example` to `.env` and fill in your network addresses:
 Copy-Item .env.example .env
 ```
 - Set `LAPTOP_IP` to `127.0.0.1` when testing on the laptop, or your laptop's LAN IPv4 address (from `ipconfig`) when running on the phone.
-- Set `ESP32_IP` once your ESP32-C3 connects to Wi-Fi and prints its IP on the Serial Monitor.
 
 ### Step 2: Laptop Setup (Windows)
 1. Create and activate a virtual environment:
@@ -105,9 +96,6 @@ Copy-Item .env.example .env
    ```bash
    bash termux/setup_termux.sh
    ```
-4. Edit `.env` with your laptop's Wi-Fi IP (`LAPTOP_IP`) and `ESP32_IP`.
+4. Edit `.env` with your laptop's Wi-Fi IP (`LAPTOP_IP`).
 5. Run `bash termux/start_bmo.sh`, then manually open **Chrome** on the phone to `http://localhost:8080` and tap the face to enter full-screen mode.
-
-### Step 4: ESP32-C3 Servo Link
-- **Default Transport (Wi-Fi HTTP)**: The brain sends `POST http://<ESP32_IP>/gesture` with JSON `{"name": "wave"}`.
-- **Experimental USB OTG Serial Route**: `esp32_c3_servos.ino` also listens on USB Serial (`115200` baud) for line commands such as `GESTURE wave` or `SERVO 90 90 90 90`. This serial fallback is **experimental** because Android/Termux lacks native USB serial device permissions without root or custom Termux:API USB wrappers. Use Wi-Fi HTTP as the primary link.
+6. Say **"Rise and shine ZMO"** to wake ZMO up, or **"Sleep off ZMO"** to put ZMO to sleep!

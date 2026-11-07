@@ -47,20 +47,7 @@ def update_face_state(
         return False
 
 
-def trigger_servo_gesture(gesture: str) -> bool:
-    """Send `POST http://<ESP32_IP>/gesture` with JSON `{"name": gesture}` if ESP32 is enabled."""
-    if not settings.ESP32_ENABLED:
-        return False
-    gesture_name = gesture if gesture in settings.VALID_GESTURES else "rest"
-    try:
-        response = requests.post(
-            settings.ESP32_GESTURE_URL,
-            json={"name": gesture_name},
-            timeout=settings.ESP32_TIMEOUT,
-        )
-        return response.status_code == 200
-    except requests.RequestException:
-        return False
+
 
 
 def run_single_turn(
@@ -98,7 +85,6 @@ def run_single_turn(
     if any(phrase in cleaned_input for phrase in sleep_phrases):
         print(f"[zmo] Sleep/exit command recognized: '{user_text.strip()}'")
         update_face_state(state="talking", emotion="sleepy", mode=current_mode)
-        trigger_servo_gesture("wave")
         tts.speak("Night night friend! ZMO is powering down to sleep. Rise and shine whenever you need me! Beep boop.")
         update_face_state(state="idle", emotion="sleepy", mode=current_mode)
         return False, "sleepy"
@@ -115,7 +101,6 @@ def run_single_turn(
         tts.speak(result.announcement)
 
     update_face_state(state="talking", emotion=result.emotion, mode=result.mode)
-    trigger_servo_gesture(result.gesture)
     tts.speak(result.spoken_text)
 
     idle_state = "offline" if result.mode == "offline" else "idle"
@@ -162,7 +147,6 @@ def wait_for_wake_word(
             if any(w in cleaned for w in WAKE_WORDS):
                 print(f"[zmo] Wake phrase detected: '{user_text.strip()}' -> Waking up!")
                 update_face_state(state="talking", emotion="excited", mode=mode)
-                trigger_servo_gesture("wave")
                 tts.speak("Rise and shine! ZMO is wide awake and ready to play! Beep boop.")
                 update_face_state(state="idle", emotion="happy", mode=mode)
                 return True
@@ -200,7 +184,6 @@ def main() -> int:
 
     print(f"[zmo] Starting ZMO brain (active backend: {backend}).")
     update_face_state(state="idle", emotion="happy", mode=initial_mode)
-    trigger_servo_gesture("wave")
 
     if initial_announcement and not args.standby:
         update_face_state(state="talking", emotion="happy", mode=initial_mode)

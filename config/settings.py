@@ -110,49 +110,14 @@ VALID_FACE_STATES: tuple[str, ...] = (
     "offline",
 )
 
-VALID_GESTURES: tuple[str, ...] = (
-    "rest",
-    "wave",
-    "nod",
-    "shake",
-    "think",
-    "happy",
-    "excited",
-)
-
-EMOTION_TO_GESTURE: dict[str, str] = {
-    "happy": "happy",
-    "excited": "excited",
-    "thinking": "think",
-    "sad": "shake",
-    "sleepy": "rest",
-    "surprised": "nod",
-    "neutral": "rest",
-}
-
 # ---------------------------------------------------------------------------
-# 5. Face HTTP Server & ESP32-C3 Body Controller (Section 5.3 & 5.3b)
+# 5. Face HTTP Server (Section 5.3)
 # ---------------------------------------------------------------------------
 FACE_HOST: str = os.getenv("FACE_HOST", "127.0.0.1").strip() or "127.0.0.1"
 FACE_PORT: int = int(os.getenv("FACE_PORT", "8080"))
 FACE_BASE_URL: str = f"http://{FACE_HOST}:{FACE_PORT}"
 FACE_STATE_URL: str = f"{FACE_BASE_URL}/state"
 FACE_POLL_INTERVAL_MS: int = 300
-
-ESP32_ENABLED: bool = os.getenv("ESP32_ENABLED", "false").strip().lower() in (
-    "1",
-    "true",
-    "yes",
-)
-ESP32_IP: str = os.getenv("ESP32_IP", "192.168.1.150").strip() or "192.168.1.150"
-ESP32_PORT: int = int(os.getenv("ESP32_PORT", "80"))
-ESP32_BASE_URL: str = (
-    f"http://{ESP32_IP}" if ESP32_PORT == 80 else f"http://{ESP32_IP}:{ESP32_PORT}"
-)
-ESP32_STATUS_URL: str = f"{ESP32_BASE_URL}/"
-ESP32_GESTURE_URL: str = f"{ESP32_BASE_URL}/gesture"
-ESP32_SERVO_URL: str = f"{ESP32_BASE_URL}/servo"
-ESP32_TIMEOUT: float = 3.0
 
 # ---------------------------------------------------------------------------
 # 6. Voice Configuration (Section 5.2)

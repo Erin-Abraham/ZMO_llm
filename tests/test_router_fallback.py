@@ -92,7 +92,6 @@ def run_tests() -> bool:
     ), f"Expected laptop-down announcement, got {res1.announcement!r}"
     # TinyLlama omitted the tag, but used "Yay!" and "!" -> must infer "excited"
     assert res1.emotion == "excited", f"Expected 'excited', got {res1.emotion!r}"
-    assert res1.gesture == "excited", f"Expected gesture 'excited', got {res1.gesture!r}"
     print("[OK] Step 1: Laptop offline -> selected 'ollama' + announced mode change.")
 
     # 2. Second message while still offline -> no duplicate mode announcement

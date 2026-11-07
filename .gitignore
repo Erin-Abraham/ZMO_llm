@@ -1,8 +1,6 @@
 # Secrets and local environment configuration (NEVER commit secrets!)
 .env
 *.env.local
-firmware/esp32_c3_servos/secrets.h
-**/secrets.h
 
 # Proposed rewrites from audit
 *.proposed

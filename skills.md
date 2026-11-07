@@ -51,25 +51,18 @@ bmo-robot/
 │   ├── stt.py                     # speech to text (Termux:API on phone)
 │   └── tts.py                     # text to speech (termux-tts-speak, pyttsx3 on laptop for testing)
 ├── face/
-│   ├── index.html                 # animated BMO face, portrait layout
+│   ├── index.html                 # animated ZMO face, portrait layout
 │   ├── face.css
 │   ├── face.js                    # states + emotions, polls /state
 │   └── face_server.py             # tiny HTTP server: serves face, exposes /state
-├── firmware/
-│   └── esp32_c3_servos/
-│       └── esp32_c3_servos.ino    # servo control + gestures over WiFi HTTP (serial optional)
 ├── termux/
 │   ├── setup_termux.sh            # one-shot phone setup
-│   └── start_bmo.sh               # launched by Termux:Boot
-├── hardware/
-│   ├── parts_list.md              # only parts actually chosen, with where to buy
-│   └── wiring.md                  # ESP32-C3 to servos, power notes
+│   └── start_bmo.sh               # launched by Termux:Boot with --standby wake-word loop
 ├── cad/
-│   └── dimensions.md              # A07 size, slot size, servo pocket sizes for Blender
+│   └── dimensions.md              # A07 size, slot size, mic clearance for Blender
 ├── tests/
 │   ├── test_llm_connection.py     # pings LM Studio and Ollama, prints which is live
-│   ├── test_router_fallback.py    # simulates laptop offline, expects Ollama selection
-│   └── test_servo_http.py         # sends each gesture to the ESP32
+│   └── test_router_fallback.py    # simulates laptop offline, expects Ollama selection
 └── docs/
     └── build_log.md               # human-written notes, create empty with a template
 ```
@@ -143,25 +136,6 @@ If the tag is missing (TinyLlama often forgets), fall back to keyword matching
   current state as JSON `{state, emotion, mode}`; the brain updates it with `POST /state`.
 - No external CDN or network dependencies. Must work offline. Full-screen kiosk friendly.
 
-### 5.3b Phone to ESP32 link
-- Default transport: WiFi HTTP. The ESP32-C3 has WiFi built in and this avoids the
-  USB host and serial permission problems that Termux has with a plain USB OTG serial device.
-- Brain sends `POST http://<ESP32_IP>/gesture` with JSON `{"name": "wave"}`.
-- Keep a serial fallback in the firmware (line commands such as `GESTURE wave`) for
-  the USB OTG route, and mark it experimental in the README.
-
-### 5.4 Firmware (firmware/esp32_c3_servos)
-- Target: ESP32-C3 Mini, Arduino framework. Library: ESP32Servo (or LEDC if it fails on the C3).
-- Pins are `#define`s at the top. Suggested defaults: LEFT_ARM 0, RIGHT_ARM 1,
-  NECK_PAN 3, NECK_TILT 4. Tell the user to verify against their exact board pinout
-  and avoid the strapping pins GPIO2, GPIO8 and GPIO9.
-- Gestures: `rest`, `wave`, `nod`, `shake`, `think`, `happy`, `excited`. Each is a short
-  non-blocking sequence (use millis, no long `delay`). Always return to `rest`.
-- Clamp every angle to a safe range (arms 0 to 150, neck 45 to 135) and attach slowly at boot
-  to avoid a power spike.
-- WiFi credentials in a separate `secrets.h` (provide `secrets.h.example`).
-- Endpoints: `GET /` (status), `POST /gesture`, `POST /servo` (raw angles for calibration).
-
 ### 5.5 Termux (termux/)
 - `setup_termux.sh`: `pkg update`, install python, git, termux-api, ollama; `pip install requests`;
   `ollama pull tinyllama`; create the Termux:Boot folder and copy `start_bmo.sh`.
@@ -198,11 +172,10 @@ If the tag is missing (TinyLlama often forgets), fall back to keyword matching
 - what you actually ran and the result
 
 ## Phase tracker
-- [ ] Phase 1 Brain: LM Studio server running, tests/test_llm_connection.py passes
-- [ ] Phase 2 Voice: speech in (external mic) and out on the Galaxy A07 (4 GB / 64 GB) via Termux:API
+- [x] Phase 1 Brain: LM Studio server running, tests/test_llm_connection.py passes
+- [x] Phase 2 Voice: speech in (external mic) and out on the Galaxy A07 (4 GB / 64 GB) via Termux:API + Standby Mode ('Rise and shine ZMO' wake word & 'Sleep off ZMO' sleep cycle)
 - [ ] Phase 3 Face: face page full-screen on the A07, reacts to /state
-- [x] Phase 4 Electronics: Skipped / N/A (phone-only build; no ESP32 or servos)
-- [ ] Phase 5 Shell: prototype box done, Blender model, final print
+- [ ] Phase 4 Shell: prototype box done, Blender model, final print
 
 ## Next steps
 Ordered, concrete, split into "Claude/agent can do" and "needs the human" (buy, install, flash, measure).

@@ -46,7 +46,6 @@ class RouteResult:
     spoken_text: str
     raw_reply: str
     emotion: str
-    gesture: str
     backend: str
     mode: str
     announcement: str | None = None
@@ -172,20 +171,17 @@ class LLMRouter:
         if not raw_reply:
             spoken = settings.FRIENDLY_ERROR_REPLY
             emotion = "sad"
-            gesture = settings.EMOTION_TO_GESTURE.get(emotion, "shake")
             mode = "laptop" if self.current_backend == "lmstudio" else "offline"
             return RouteResult(
                 spoken_text=spoken,
                 raw_reply=f"[sad] {spoken}",
                 emotion=emotion,
-                gesture=gesture,
                 backend=self.current_backend or "ollama",
                 mode=mode,
                 announcement=announcement,
             )
 
         emotion, spoken_text = extract_emotion_and_clean_text(raw_reply)
-        gesture = settings.EMOTION_TO_GESTURE.get(emotion, "rest")
         self.history.add_turn(user_message=user_message, assistant_message=raw_reply)
         mode = "laptop" if backend == "lmstudio" else "offline"
 
@@ -193,7 +189,6 @@ class LLMRouter:
             spoken_text=spoken_text,
             raw_reply=raw_reply,
             emotion=emotion,
-            gesture=gesture,
             backend=backend,
             mode=mode,
             announcement=announcement,

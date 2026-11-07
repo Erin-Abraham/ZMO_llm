@@ -17,28 +17,7 @@ Use these reference measurements and printing tolerances when modeling BMO's tea
 
 ---
 
-## 2. Optional SG90 Servo Pockets (Not Required for Phone-Only Build)
-
-| Feature | Nominal SG90 Size | Recommended CAD Cutout (PLA) | Notes |
-|---|---:|---:|---|
-| **Main Body Pocket (L × W)** | `22.5 × 12.0 mm` | `23.2 × 12.6 mm` | `+0.3 mm` clearance per wall for 0.4 mm nozzle PLA |
-| **Body Depth (below mounting ears)** | `16.0 mm` | `17.0 mm` | Keep a `3.5 mm` wire relief slot at the bottom side of the servo for the 3-wire ribbon |
-| **Total Width Across Mounting Ears** | `32.2 mm` | `33.0 mm` recess | Ears are `2.5 mm` thick; sit flush against the inner shell bosses |
-| **Mounting Hole Spacing (center-to-center)** | `27.5 mm` | `27.5 mm` (`Ø 1.8 mm` pilot holes) | Self-taps cleanly with standard M2 servo mounting screws |
-| **Output Shaft Spline Exit Hole** | `Ø 4.8 mm` (offset `6.0 mm` from end of body) | `Ø 9.0 mm` through-hole in side wall | Gives full clearance for the servo horn hub so it never rubs against the PLA shell |
-
----
-
-## 3. ESP32-C3 Mini & Power Bay
-
-| Component | Nominal Footprint | Recommended Mounting |
-|---|---|---|
-| **ESP32-C3 Mini / SuperMini** | `22.5 × 18.0 mm` | Snap-fit tray or M2 standoffs on the lower interior floor; align USB-C port with a rear access slot (`12 × 7 mm`) |
-| **470 µF – 1000 µF Capacitor & 5 V Power Bus** | `~35 × 25 × 20 mm` | Velcro or zip-tie anchor loops on the baseplate |
-
----
-
-## 4. Exterior BMO Proportions & 3D Printing Tips
+## 2. Exterior ZMO Proportions & 3D Printing Tips
 
 - **Classic BMO Box Proportions**: Approximately **Width : Height : Depth = 1 : 1.45 : 0.72**
   - Suggested outer shell size around the Galaxy A07: **`116 mm (W) × 195 mm (H) × 90 mm (D)`**.
