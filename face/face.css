@@ -1,4 +1,4 @@
-/* BMO Face Stylesheet - Portrait 20:9 Full-Screen Kiosk Layout (Offline-ready) */
+/* ZMO Face Stylesheet - Fluid Responsive Kiosk & Pop-Up View Layout */
 
 :root {
   --bmo-teal: #5bc2b4;
@@ -35,40 +35,71 @@ body {
   height: 100%;
   max-width: 540px;
   margin: 0 auto;
-  padding: 5vh 6vw 4vh;
+  padding: 4vh 5vw 3vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background: linear-gradient(180deg, #63cabe 0%, var(--bmo-teal) 70%, #4db0a2 100%);
+  transition: padding 0.2s ease;
 }
 
-/* Dark screen area housing BMO's face */
+/* Dark screen area housing ZMO's face */
 #bmo-screen {
   position: relative;
   width: 100%;
-  height: 58vh;
+  height: 60vh;
   background: radial-gradient(circle at 50% 45%, #1d3633 0%, var(--bmo-screen-bg) 85%);
-  border: 8px solid var(--bmo-screen-border);
-  border-radius: 36px;
+  border: 7px solid var(--bmo-screen-border);
+  border-radius: 28px;
   box-shadow:
-    inset 0 8px 24px rgba(0, 0, 0, 0.55),
-    0 6px 0 rgba(255, 255, 255, 0.25);
+    inset 0 6px 20px rgba(0, 0, 0, 0.55),
+    0 4px 0 rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+/* Header row inside screen (Float button, indicator dots, offline dot) */
+#screen-header {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+#pip-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: var(--bmo-feature);
+  border-radius: 8px;
+  padding: 4px 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.45;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+#pip-btn:hover,
+#pip-btn:active {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Small corner indicator dot when laptop is offline */
 #offline-dot {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: var(--bmo-offline-amber);
-  box-shadow: 0 0 10px var(--bmo-offline-amber);
+  box-shadow: 0 0 8px var(--bmo-offline-amber);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -80,18 +111,15 @@ body.state-offline #offline-dot {
 
 /* Listening / Thinking indicator dots */
 #state-indicator {
-  position: absolute;
-  top: 20px;
-  left: 22px;
   display: flex;
-  gap: 6px;
+  gap: 5px;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 #state-indicator .dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background-color: var(--bmo-feature);
 }
@@ -99,7 +127,6 @@ body.state-offline #offline-dot {
 body.state-listening #state-indicator {
   opacity: 0.9;
 }
-
 body.state-listening #state-indicator .dot {
   animation: pulse-listen 1s infinite ease-in-out;
 }
@@ -107,7 +134,6 @@ body.state-listening #state-indicator .dot {
 body.state-thinking #state-indicator {
   opacity: 1;
 }
-
 body.state-thinking #state-indicator .dot:nth-child(1) {
   animation: bounce-think 0.9s infinite 0s;
 }
@@ -118,13 +144,13 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
   animation: bounce-think 0.9s infinite 0.4s;
 }
 
-/* Face features layout */
+/* Face features layout - responsive vmin scaling */
 #face-container {
-  width: 82%;
+  width: 86%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5.5vh;
+  gap: clamp(14px, 5.5vmin, 45px);
   transition: transform 0.3s ease;
 }
 
@@ -138,11 +164,11 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
 /* Oval eyes */
 .eye {
   position: relative;
-  width: 34px;
-  height: 54px;
+  width: clamp(22px, 8vmin, 50px);
+  height: clamp(34px, 13vmin, 80px);
   background-color: var(--bmo-feature);
   border-radius: 50%;
-  box-shadow: 0 0 14px rgba(126, 247, 212, 0.35);
+  box-shadow: 0 0 12px rgba(126, 247, 212, 0.35);
   transition:
     transform 0.16s ease,
     height 0.16s ease,
@@ -151,17 +177,16 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
 
 .eye .sparkle {
   position: absolute;
-  top: 10px;
-  left: 8px;
-  width: 9px;
-  height: 9px;
+  top: 18%;
+  left: 22%;
+  width: clamp(5px, 2.2vmin, 12px);
+  height: clamp(5px, 2.2vmin, 12px);
   border-radius: 50%;
   background-color: #ffffff;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
-/* Blink class toggled every 3-6 seconds by face.js */
 .eye.blinking {
   transform: scaleY(0.1);
 }
@@ -176,8 +201,8 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
 }
 
 .blush {
-  width: 42px;
-  height: 20px;
+  width: clamp(24px, 10vmin, 60px);
+  height: clamp(12px, 5vmin, 28px);
   border-radius: 50%;
   background-color: var(--bmo-blush);
   opacity: 0.45;
@@ -186,8 +211,8 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
 }
 
 .mouth-wrapper {
-  width: 110px;
-  height: 56px;
+  width: clamp(60px, 24vmin, 150px);
+  height: clamp(30px, 12vmin, 75px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,9 +220,9 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
 
 .mouth {
   position: relative;
-  width: 68px;
-  height: 22px;
-  border-bottom: 7px solid var(--bmo-feature);
+  width: clamp(40px, 16vmin, 95px);
+  height: clamp(12px, 5vmin, 30px);
+  border-bottom: clamp(4px, 1.5vmin, 8px) solid var(--bmo-feature);
   border-radius: 0 0 40px 40px;
   overflow: hidden;
   transition: all 0.18s ease;
@@ -208,8 +233,8 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 38px;
-  height: 22px;
+  width: 60%;
+  height: 65%;
   background-color: var(--bmo-tongue);
   border-radius: 50% 50% 0 0;
   opacity: 0;
@@ -217,7 +242,7 @@ body.state-thinking #state-indicator .dot:nth-child(3) {
 }
 
 /* ============================================================================
-   EMOTION VARIATIONS (happy, excited, sad, sleepy, surprised, neutral, thinking)
+   EMOTION VARIATIONS
    ============================================================================ */
 
 /* Happy */
@@ -226,10 +251,10 @@ body.emotion-happy .blush {
   transform: scale(1.1);
 }
 body.emotion-happy .mouth {
-  width: 76px;
-  height: 34px;
+  width: clamp(46px, 18vmin, 110px);
+  height: clamp(18px, 7.5vmin, 44px);
   background-color: var(--bmo-mouth-inside);
-  border: 5px solid var(--bmo-feature);
+  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
   border-radius: 10px 10px 46px 46px;
 }
 body.emotion-happy .mouth .tongue {
@@ -248,10 +273,10 @@ body.emotion-excited .blush {
   transform: scale(1.25);
 }
 body.emotion-excited .mouth {
-  width: 86px;
-  height: 46px;
+  width: clamp(52px, 20vmin, 125px);
+  height: clamp(24px, 10vmin, 60px);
   background-color: var(--bmo-mouth-inside);
-  border: 5px solid var(--bmo-feature);
+  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
   border-radius: 12px 12px 50px 50px;
 }
 body.emotion-excited .mouth .tongue {
@@ -269,70 +294,70 @@ body.emotion-sad .blush {
   opacity: 0.2;
 }
 body.emotion-sad .mouth {
-  width: 60px;
-  height: 22px;
+  width: clamp(38px, 15vmin, 85px);
+  height: clamp(12px, 5vmin, 30px);
   border-bottom: none;
-  border-top: 7px solid var(--bmo-feature);
+  border-top: clamp(4px, 1.5vmin, 8px) solid var(--bmo-feature);
   border-radius: 40px 40px 0 0;
-  transform: translateY(10px);
+  transform: translateY(6px);
 }
 
 /* Sleepy */
 body.emotion-sleepy .eye {
-  height: 12px;
+  height: clamp(8px, 3vmin, 16px);
   border-radius: 12px;
-  transform: translateY(14px);
+  transform: translateY(8px);
 }
 body.emotion-sleepy .blush {
   opacity: 0.55;
 }
 body.emotion-sleepy .mouth {
-  width: 30px;
-  height: 24px;
-  border: 5px solid var(--bmo-feature);
+  width: clamp(18px, 7vmin, 40px);
+  height: clamp(16px, 6vmin, 34px);
+  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
   border-radius: 50%;
 }
 
 /* Surprised */
 body.emotion-surprised .eye {
-  width: 40px;
-  height: 60px;
+  width: clamp(26px, 9vmin, 58px);
+  height: clamp(38px, 14vmin, 85px);
 }
 body.emotion-surprised .eye .sparkle {
   opacity: 0.85;
 }
 body.emotion-surprised .mouth {
-  width: 44px;
-  height: 44px;
+  width: clamp(26px, 10vmin, 60px);
+  height: clamp(26px, 10vmin, 60px);
   background-color: var(--bmo-mouth-inside);
-  border: 6px solid var(--bmo-feature);
+  border: clamp(4px, 1.4vmin, 7px) solid var(--bmo-feature);
   border-radius: 50%;
 }
 
 /* Thinking */
 body.emotion-thinking .eye,
 body.state-thinking .eye {
-  transform: translate(8px, -10px) scaleY(0.88);
+  transform: translate(6px, -8px) scaleY(0.88);
 }
 body.emotion-thinking .mouth,
 body.state-thinking .mouth {
-  width: 42px;
-  height: 8px;
-  border-bottom: 6px solid var(--bmo-feature);
+  width: clamp(26px, 10vmin, 60px);
+  height: clamp(6px, 2vmin, 12px);
+  border-bottom: clamp(4px, 1.4vmin, 7px) solid var(--bmo-feature);
   border-radius: 8px;
-  transform: translateX(8px);
+  transform: translateX(6px);
 }
 
 /* Neutral */
 body.emotion-neutral .mouth {
-  width: 64px;
-  height: 18px;
-  border-bottom: 6px solid var(--bmo-feature);
+  width: clamp(38px, 15vmin, 90px);
+  height: clamp(10px, 4vmin, 24px);
+  border-bottom: clamp(4px, 1.4vmin, 7px) solid var(--bmo-feature);
   border-radius: 0 0 32px 32px;
 }
 
 /* ============================================================================
-   STATE ANIMATIONS (listening, talking)
+   STATE ANIMATIONS
    ============================================================================ */
 
 body.state-listening #face-container {
@@ -341,55 +366,42 @@ body.state-listening #face-container {
 
 body.state-talking .mouth {
   background-color: var(--bmo-mouth-inside);
-  border: 5px solid var(--bmo-feature);
+  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
   animation: talk-mouth 0.26s infinite alternate ease-in-out;
 }
-
 body.state-talking .mouth .tongue {
   opacity: 1;
 }
 
 @keyframes talk-mouth {
   0% {
-    height: 14px;
-    width: 58px;
+    height: clamp(10px, 4vmin, 20px);
+    width: clamp(38px, 14vmin, 80px);
     border-radius: 14px 14px 36px 36px;
   }
   100% {
-    height: 46px;
-    width: 80px;
+    height: clamp(26px, 10vmin, 55px);
+    width: clamp(50px, 19vmin, 115px);
     border-radius: 16px 16px 48px 48px;
   }
 }
 
 @keyframes pulse-listen {
-  0%,
-  100% {
-    transform: scale(0.85);
-    opacity: 0.4;
-  }
-  50% {
-    transform: scale(1.25);
-    opacity: 1;
-  }
+  0%, 100% { transform: scale(0.85); opacity: 0.4; }
+  50% { transform: scale(1.25); opacity: 1; }
 }
 
 @keyframes bounce-think {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-7px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 /* ============================================================================
-   Decorative Lower BMO Front Panel (for 20:9 Vertical Phone Orientation)
+   Decorative Lower Front Panel (Portrait Tall only)
    ============================================================================ */
 #bmo-controls {
   width: 100%;
-  height: 28vh;
+  height: 26vh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -401,23 +413,20 @@ body.state-talking .mouth .tongue {
   align-items: center;
   justify-content: space-between;
 }
-
 .floppy-slot {
   width: 58%;
-  height: 16px;
+  height: 14px;
   background-color: #193834;
   border-radius: 8px;
   box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.6);
 }
-
 .status-led {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background-color: #39d353;
   box-shadow: 0 0 10px #39d353;
 }
-
 body.mode-offline .status-led,
 body.state-offline .status-led {
   background-color: var(--bmo-offline-amber);
@@ -430,72 +439,87 @@ body.state-offline .status-led {
   justify-content: space-between;
   padding: 0 4%;
 }
-
 .dpad {
   position: relative;
-  width: 84px;
-  height: 84px;
+  width: 76px;
+  height: 76px;
 }
-
-.dpad-v,
-.dpad-h {
+.dpad-v, .dpad-h {
   position: absolute;
   background-color: #f4d35e;
-  border-radius: 6px;
-  box-shadow: 0 4px 0 #c9a72c;
+  border-radius: 5px;
+  box-shadow: 0 3px 0 #c9a72c;
 }
-
-.dpad-v {
-  width: 28px;
-  height: 84px;
-  left: 28px;
-  top: 0;
-}
-
-.dpad-h {
-  width: 84px;
-  height: 28px;
-  left: 0;
-  top: 28px;
-}
+.dpad-v { width: 26px; height: 76px; left: 25px; top: 0; }
+.dpad-h { width: 76px; height: 26px; left: 0; top: 25px; }
 
 .action-buttons {
   position: relative;
-  width: 130px;
-  height: 90px;
+  width: 120px;
+  height: 80px;
 }
-
 .btn-circle {
   position: absolute;
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
 }
-
 .btn-circle.red {
   bottom: 0;
-  right: 8px;
+  right: 6px;
   background-color: #e63946;
-  box-shadow: 0 4px 0 #9e1f29;
+  box-shadow: 0 3px 0 #9e1f29;
 }
-
 .btn-circle.green {
-  top: 6px;
-  right: 54px;
-  width: 28px;
-  height: 28px;
+  top: 4px;
+  right: 48px;
+  width: 24px;
+  height: 24px;
   background-color: #2ecc71;
-  box-shadow: 0 4px 0 #1e9651;
+  box-shadow: 0 3px 0 #1e9651;
 }
-
 .btn-triangle {
   position: absolute;
-  bottom: 14px;
-  left: 4px;
+  bottom: 10px;
+  left: 2px;
   width: 0;
   height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-bottom: 34px solid #00bbf9;
-  filter: drop-shadow(0 4px 0 #0081ad);
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 30px solid #00bbf9;
+  filter: drop-shadow(0 3px 0 #0081ad);
+}
+
+/* ============================================================================
+   RESPONSIVE OPTIMIZATION FOR POP-UP VIEW & LANDSCAPE
+   Whenever in landscape, square, or compact popup window:
+   - Hide the lower plastic toy controls completely.
+   - Expand the face screen to fill 100% of the floating window.
+   - Perfectly scale eyes, cheeks, and mouth!
+   ============================================================================ */
+
+@media (orientation: landscape), (min-aspect-ratio: 0.8), (max-height: 540px), (max-width: 420px) {
+  #bmo-controls {
+    display: none !important;
+  }
+
+  #bmo-shell {
+    max-width: none !important;
+    padding: 6px !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  #bmo-screen {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 20px !important;
+    border-width: 5px !important;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  #face-container {
+    width: 90% !important;
+    max-width: 600px !important;
+  }
 }
