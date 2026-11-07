@@ -1,15 +1,18 @@
-/* ZMO Face Stylesheet - Fluid Responsive Kiosk & Pop-Up View Layout */
+/* ============================================================================
+   ZMO Futuristic Cyber Pixel Art Stylesheet
+   Pure Neon Cyan Palette - Fully Responsive Kiosk, Pop-Up View & Landscape
+   ============================================================================ */
 
 :root {
-  --bmo-teal: #5bc2b4;
-  --bmo-teal-dark: #3f9c90;
-  --bmo-screen-bg: #162a28;
-  --bmo-screen-border: #0e1c1a;
-  --bmo-feature: #7ef7d4;
-  --bmo-blush: #ff8da1;
-  --bmo-mouth-inside: #2b594f;
-  --bmo-tongue: #ff7b89;
-  --bmo-offline-amber: #ff9f1c;
+  --cyber-bg: #030712;
+  --cyber-bg-surface: #06111e;
+  --cyber-border: rgba(0, 243, 255, 0.25);
+  --cyber-cyan: #00f3ff;
+  --cyber-cyan-bright: #e0ffff;
+  --cyber-cyan-glow: rgba(0, 243, 255, 0.55);
+  --cyber-cyan-dim: rgba(0, 243, 255, 0.18);
+  --cyber-amber: #ffaa00;
+  --cyber-amber-glow: rgba(255, 170, 0, 0.6);
 }
 
 * {
@@ -25,501 +28,332 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: var(--bmo-teal);
-  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--cyber-bg);
+  color: var(--cyber-cyan);
+  font-family: "Courier New", Courier, monospace, system-ui, sans-serif;
   touch-action: manipulation;
 }
 
-#bmo-shell {
+/* Outer Shell - fills 100% of the popup or full screen */
+#zmo-shell {
   width: 100%;
   height: 100%;
-  max-width: 540px;
-  margin: 0 auto;
-  padding: 4vh 5vw 3vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: linear-gradient(180deg, #63cabe 0%, var(--bmo-teal) 70%, #4db0a2 100%);
-  transition: padding 0.2s ease;
-}
-
-/* Dark screen area housing ZMO's face */
-#bmo-screen {
-  position: relative;
-  width: 100%;
-  height: 60vh;
-  background: radial-gradient(circle at 50% 45%, #1d3633 0%, var(--bmo-screen-bg) 85%);
-  border: 7px solid var(--bmo-screen-border);
-  border-radius: 28px;
-  box-shadow:
-    inset 0 6px 20px rgba(0, 0, 0, 0.55),
-    0 4px 0 rgba(255, 255, 255, 0.2);
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: radial-gradient(circle at 50% 50%, #081726 0%, var(--cyber-bg) 85%);
+}
+
+/* Inner Screen Container with cyber frame & subtle grid */
+#zmo-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, var(--cyber-bg-surface) 0%, var(--cyber-bg) 90%);
+  border: 1px solid var(--cyber-border);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 0 30px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(0, 243, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   overflow: hidden;
+}
+
+/* Subtle futuristic scanline overlay */
+#zmo-screen::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* ============================================================================
+   CYBER HUD HEADER (Clean, minimalist, no intrusive buttons)
+   ============================================================================ */
+#cyber-hud {
+  position: relative;
+  width: 100%;
+  padding: 10px 14px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: clamp(9px, 2.2vmin, 13px);
+  letter-spacing: 1.5px;
+  z-index: 30;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-bracket {
+  color: rgba(0, 243, 255, 0.4);
+}
+
+.hud-id {
+  font-weight: 700;
+  color: var(--cyber-cyan-bright);
+  text-shadow: 0 0 8px var(--cyber-cyan);
+}
+
+/* HUD Waveform (animates when listening or thinking) */
+#hud-waveform {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 12px;
+}
+
+.wave-bar {
+  width: 3px;
+  height: 4px;
+  background-color: var(--cyber-cyan-dim);
+  border-radius: 1px;
   transition: all 0.2s ease;
 }
 
-/* Header row inside screen (Float button, indicator dots, offline dot) */
-#screen-header {
-  position: absolute;
-  top: 10px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 10;
-  pointer-events: auto;
+body.state-listening .wave-bar {
+  background-color: var(--cyber-cyan);
+  box-shadow: 0 0 6px var(--cyber-cyan);
+  animation: hud-listen-wave 0.8s infinite ease-in-out alternate;
+}
+body.state-listening .wave-bar:nth-child(1) { animation-delay: 0.0s; }
+body.state-listening .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+body.state-listening .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+body.state-listening .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+body.state-listening .wave-bar:nth-child(5) { animation-delay: 0.6s; }
+
+body.state-thinking .wave-bar {
+  background-color: var(--cyber-cyan-bright);
+  box-shadow: 0 0 8px var(--cyber-cyan);
+  animation: hud-think-scan 0.5s infinite alternate ease-in-out;
+}
+body.state-thinking .wave-bar:nth-child(1) { animation-delay: 0.0s; }
+body.state-thinking .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+body.state-thinking .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+body.state-thinking .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+body.state-thinking .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes hud-listen-wave {
+  0% { height: 3px; }
+  100% { height: 14px; }
 }
 
-#pip-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: none;
-  color: var(--bmo-feature);
-  border-radius: 8px;
-  padding: 4px 6px;
-  cursor: pointer;
+@keyframes hud-think-scan {
+  0% { transform: scaleY(0.3); opacity: 0.3; }
+  100% { transform: scaleY(1.3); opacity: 1; }
+}
+
+.hud-status {
+  font-weight: 700;
+  color: var(--cyber-cyan);
+  text-shadow: 0 0 6px var(--cyber-cyan);
+}
+
+body.mode-offline .hud-status,
+body.state-offline .hud-status {
+  color: var(--cyber-amber);
+  text-shadow: 0 0 8px var(--cyber-amber);
+}
+
+/* ============================================================================
+   FACE STAGE & SVG CONTAINER
+   ============================================================================ */
+#face-stage {
+  position: relative;
+  width: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.45;
-  transition: opacity 0.2s ease, background 0.2s ease;
-}
-#pip-btn:hover,
-#pip-btn:active {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.3);
+  padding: 10px;
+  z-index: 10;
 }
 
-/* Small corner indicator dot when laptop is offline */
-#offline-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: var(--bmo-offline-amber);
-  box-shadow: 0 0 8px var(--bmo-offline-amber);
-  opacity: 0;
+#zmo-face-svg {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+/* Listening micro-pulse */
+body.state-listening #zmo-face-svg {
+  transform: scale(1.02);
+}
+
+/* ============================================================================
+   PIXEL ART EYE & MOUTH VARIANTS (Controlled by body classes)
+   ============================================================================ */
+
+/* Hide all variants by default */
+.eye-variant,
+.mouth-variant {
+  display: none;
+}
+
+/* Default state: Normal eye, Normal smile */
+.eye-normal {
+  display: block;
+}
+.mouth-smile {
+  display: block;
+}
+
+/* --- Blinking State --- */
+body.is-blinking .eye-group .eye-variant {
+  display: none !important;
+}
+body.is-blinking .eye-group .eye-blink {
+  display: block !important;
+}
+
+/* --- Emotion Overrides --- */
+
+/* Happy: ^ arch eyes + smile */
+body.emotion-happy .eye-normal { display: none; }
+body.emotion-happy .eye-happy { display: block; }
+body.emotion-happy .mouth-smile { display: block; }
+
+/* Excited: Tall eyes with cyber flares + wide open smile */
+body.emotion-excited .eye-normal { display: none; }
+body.emotion-excited .eye-excited { display: block; }
+body.emotion-excited .mouth-smile { display: none; }
+body.emotion-excited .mouth-excited { display: block; }
+
+/* Sleepy: Flat horizontal cyber dashes */
+body.emotion-sleepy .eye-normal { display: none; }
+body.emotion-sleepy .eye-sleepy { display: block; }
+body.emotion-sleepy .mouth-smile { display: none; }
+body.emotion-sleepy .mouth-sleepy { display: block; }
+
+/* Sad: Downturned eyes + frown */
+body.emotion-sad .eye-normal { display: none; }
+body.emotion-sad .eye-sad { display: block; }
+body.emotion-sad .mouth-smile { display: none; }
+body.emotion-sad .mouth-sad { display: block; }
+
+/* Surprised: Hollow square eyes + O mouth */
+body.emotion-surprised .eye-normal { display: none; }
+body.emotion-surprised .eye-surprised { display: block; }
+body.emotion-surprised .mouth-smile { display: none; }
+body.emotion-surprised .mouth-surprised { display: block; }
+
+/* Thinking: Shifted eyes + smirk */
+body.emotion-thinking .eye-normal,
+body.state-thinking .eye-normal { display: none; }
+body.emotion-thinking .eye-thinking,
+body.state-thinking .eye-thinking { display: block; }
+body.emotion-thinking .mouth-smile,
+body.state-thinking .mouth-smile { display: none; }
+body.emotion-thinking .mouth-thinking,
+body.state-thinking .mouth-thinking { display: block; }
+
+/* Neutral: Normal eyes + flat mouth */
+body.emotion-neutral .mouth-smile { display: none; }
+body.emotion-neutral .mouth-neutral { display: block; }
+
+/* --- Talking State: Cyber Audio Waveform Equalizer Mouth --- */
+body.state-talking .mouth-variant {
+  display: none !important;
+}
+body.state-talking .mouth-talking {
+  display: block !important;
+}
+
+.eq-bar {
+  transform-origin: 50% 80px;
+  animation: cyber-eq 0.24s infinite alternate ease-in-out;
+}
+.eq-1 { animation-delay: 0.04s; }
+.eq-2 { animation-delay: 0.16s; }
+.eq-3 { animation-delay: 0.08s; }
+.eq-4 { animation-delay: 0.20s; }
+.eq-5 { animation-delay: 0.12s; }
+.eq-6 { animation-delay: 0.24s; }
+.eq-7 { animation-delay: 0.06s; }
+
+@keyframes cyber-eq {
+  0% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1.15); }
+  100% { transform: scaleY(0.5); }
+}
+
+/* Subtle Cyber Cheek Ticks */
+.cheek-tick {
+  opacity: 0.35;
   transition: opacity 0.25s ease;
 }
-
-body.mode-offline #offline-dot,
-body.state-offline #offline-dot {
-  opacity: 1;
-}
-
-/* Listening / Thinking indicator dots */
-#state-indicator {
-  display: flex;
-  gap: 5px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-#state-indicator .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--bmo-feature);
-}
-
-body.state-listening #state-indicator {
-  opacity: 0.9;
-}
-body.state-listening #state-indicator .dot {
-  animation: pulse-listen 1s infinite ease-in-out;
-}
-
-body.state-thinking #state-indicator {
-  opacity: 1;
-}
-body.state-thinking #state-indicator .dot:nth-child(1) {
-  animation: bounce-think 0.9s infinite 0s;
-}
-body.state-thinking #state-indicator .dot:nth-child(2) {
-  animation: bounce-think 0.9s infinite 0.2s;
-}
-body.state-thinking #state-indicator .dot:nth-child(3) {
-  animation: bounce-think 0.9s infinite 0.4s;
-}
-
-/* Face features layout - responsive vmin scaling */
-#face-container {
-  width: 86%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(14px, 5.5vmin, 45px);
-  transition: transform 0.3s ease;
-}
-
-.eyes-row {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10%;
-}
-
-/* Oval eyes */
-.eye {
-  position: relative;
-  width: clamp(22px, 8vmin, 50px);
-  height: clamp(34px, 13vmin, 80px);
-  background-color: var(--bmo-feature);
-  border-radius: 50%;
-  box-shadow: 0 0 12px rgba(126, 247, 212, 0.35);
-  transition:
-    transform 0.16s ease,
-    height 0.16s ease,
-    border-radius 0.16s ease;
-}
-
-.eye .sparkle {
-  position: absolute;
-  top: 18%;
-  left: 22%;
-  width: clamp(5px, 2.2vmin, 12px);
-  height: clamp(5px, 2.2vmin, 12px);
-  border-radius: 50%;
-  background-color: #ffffff;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.eye.blinking {
-  transform: scaleY(0.1);
-}
-
-/* Cheeks and Mouth */
-.cheeks-row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 4%;
-}
-
-.blush {
-  width: clamp(24px, 10vmin, 60px);
-  height: clamp(12px, 5vmin, 28px);
-  border-radius: 50%;
-  background-color: var(--bmo-blush);
-  opacity: 0.45;
-  filter: blur(2px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.mouth-wrapper {
-  width: clamp(60px, 24vmin, 150px);
-  height: clamp(30px, 12vmin, 75px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mouth {
-  position: relative;
-  width: clamp(40px, 16vmin, 95px);
-  height: clamp(12px, 5vmin, 30px);
-  border-bottom: clamp(4px, 1.5vmin, 8px) solid var(--bmo-feature);
-  border-radius: 0 0 40px 40px;
-  overflow: hidden;
-  transition: all 0.18s ease;
-}
-
-.mouth .tongue {
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 65%;
-  background-color: var(--bmo-tongue);
-  border-radius: 50% 50% 0 0;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-
-/* ============================================================================
-   EMOTION VARIATIONS
-   ============================================================================ */
-
-/* Happy */
-body.emotion-happy .blush {
-  opacity: 0.7;
-  transform: scale(1.1);
-}
-body.emotion-happy .mouth {
-  width: clamp(46px, 18vmin, 110px);
-  height: clamp(18px, 7.5vmin, 44px);
-  background-color: var(--bmo-mouth-inside);
-  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
-  border-radius: 10px 10px 46px 46px;
-}
-body.emotion-happy .mouth .tongue {
-  opacity: 1;
-}
-
-/* Excited */
-body.emotion-excited .eye {
-  transform: scale(1.15);
-}
-body.emotion-excited .eye .sparkle {
-  opacity: 0.95;
-}
-body.emotion-excited .blush {
-  opacity: 0.9;
-  transform: scale(1.25);
-}
-body.emotion-excited .mouth {
-  width: clamp(52px, 20vmin, 125px);
-  height: clamp(24px, 10vmin, 60px);
-  background-color: var(--bmo-mouth-inside);
-  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
-  border-radius: 12px 12px 50px 50px;
-}
-body.emotion-excited .mouth .tongue {
-  opacity: 1;
-}
-
-/* Sad */
-body.emotion-sad .eye.left-eye {
-  transform: rotate(-10deg) scaleY(0.85);
-}
-body.emotion-sad .eye.right-eye {
-  transform: rotate(10deg) scaleY(0.85);
-}
-body.emotion-sad .blush {
-  opacity: 0.2;
-}
-body.emotion-sad .mouth {
-  width: clamp(38px, 15vmin, 85px);
-  height: clamp(12px, 5vmin, 30px);
-  border-bottom: none;
-  border-top: clamp(4px, 1.5vmin, 8px) solid var(--bmo-feature);
-  border-radius: 40px 40px 0 0;
-  transform: translateY(6px);
-}
-
-/* Sleepy */
-body.emotion-sleepy .eye {
-  height: clamp(8px, 3vmin, 16px);
-  border-radius: 12px;
-  transform: translateY(8px);
-}
-body.emotion-sleepy .blush {
-  opacity: 0.55;
-}
-body.emotion-sleepy .mouth {
-  width: clamp(18px, 7vmin, 40px);
-  height: clamp(16px, 6vmin, 34px);
-  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
-  border-radius: 50%;
-}
-
-/* Surprised */
-body.emotion-surprised .eye {
-  width: clamp(26px, 9vmin, 58px);
-  height: clamp(38px, 14vmin, 85px);
-}
-body.emotion-surprised .eye .sparkle {
+body.emotion-happy .cheek-tick,
+body.emotion-excited .cheek-tick {
   opacity: 0.85;
 }
-body.emotion-surprised .mouth {
-  width: clamp(26px, 10vmin, 60px);
-  height: clamp(26px, 10vmin, 60px);
-  background-color: var(--bmo-mouth-inside);
-  border: clamp(4px, 1.4vmin, 7px) solid var(--bmo-feature);
-  border-radius: 50%;
-}
 
-/* Thinking */
-body.emotion-thinking .eye,
-body.state-thinking .eye {
-  transform: translate(6px, -8px) scaleY(0.88);
+/* ============================================================================
+   CORNER CYBER ACCENT BRACKETS
+   ============================================================================ */
+.cyber-bracket-tl,
+.cyber-bracket-tr,
+.cyber-bracket-bl,
+.cyber-bracket-br {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 25;
 }
-body.emotion-thinking .mouth,
-body.state-thinking .mouth {
-  width: clamp(26px, 10vmin, 60px);
-  height: clamp(6px, 2vmin, 12px);
-  border-bottom: clamp(4px, 1.4vmin, 7px) solid var(--bmo-feature);
-  border-radius: 8px;
-  transform: translateX(6px);
+.cyber-bracket-tl {
+  top: 6px; left: 6px;
+  border-top: 2px solid var(--cyber-cyan);
+  border-left: 2px solid var(--cyber-cyan);
 }
-
-/* Neutral */
-body.emotion-neutral .mouth {
-  width: clamp(38px, 15vmin, 90px);
-  height: clamp(10px, 4vmin, 24px);
-  border-bottom: clamp(4px, 1.4vmin, 7px) solid var(--bmo-feature);
-  border-radius: 0 0 32px 32px;
+.cyber-bracket-tr {
+  top: 6px; right: 6px;
+  border-top: 2px solid var(--cyber-cyan);
+  border-right: 2px solid var(--cyber-cyan);
+}
+.cyber-bracket-bl {
+  bottom: 6px; left: 6px;
+  border-bottom: 2px solid var(--cyber-cyan);
+  border-left: 2px solid var(--cyber-cyan);
+}
+.cyber-bracket-br {
+  bottom: 6px; right: 6px;
+  border-bottom: 2px solid var(--cyber-cyan);
+  border-right: 2px solid var(--cyber-cyan);
 }
 
 /* ============================================================================
-   STATE ANIMATIONS
+   SAMSUNG POP-UP VIEW & RESPONSIVE SCALING
+   Seamless 100% view in floating window, landscape, or portrait
    ============================================================================ */
-
-body.state-listening #face-container {
-  transform: scale(1.03);
-}
-
-body.state-talking .mouth {
-  background-color: var(--bmo-mouth-inside);
-  border: clamp(3px, 1.2vmin, 6px) solid var(--bmo-feature);
-  animation: talk-mouth 0.26s infinite alternate ease-in-out;
-}
-body.state-talking .mouth .tongue {
-  opacity: 1;
-}
-
-@keyframes talk-mouth {
-  0% {
-    height: clamp(10px, 4vmin, 20px);
-    width: clamp(38px, 14vmin, 80px);
-    border-radius: 14px 14px 36px 36px;
+@media (max-width: 380px), (max-height: 480px) {
+  #zmo-shell {
+    padding: 2px;
   }
-  100% {
-    height: clamp(26px, 10vmin, 55px);
-    width: clamp(50px, 19vmin, 115px);
-    border-radius: 16px 16px 48px 48px;
+  #zmo-screen {
+    border-radius: 10px;
+    border-width: 1px;
   }
-}
-
-@keyframes pulse-listen {
-  0%, 100% { transform: scale(0.85); opacity: 0.4; }
-  50% { transform: scale(1.25); opacity: 1; }
-}
-
-@keyframes bounce-think {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-/* ============================================================================
-   Decorative Lower Front Panel (Portrait Tall only)
-   ============================================================================ */
-#bmo-controls {
-  width: 100%;
-  height: 26vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 1vh 2vw;
-}
-
-.slot-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.floppy-slot {
-  width: 58%;
-  height: 14px;
-  background-color: #193834;
-  border-radius: 8px;
-  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.6);
-}
-.status-led {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background-color: #39d353;
-  box-shadow: 0 0 10px #39d353;
-}
-body.mode-offline .status-led,
-body.state-offline .status-led {
-  background-color: var(--bmo-offline-amber);
-  box-shadow: 0 0 10px var(--bmo-offline-amber);
-}
-
-.controls-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 4%;
-}
-.dpad {
-  position: relative;
-  width: 76px;
-  height: 76px;
-}
-.dpad-v, .dpad-h {
-  position: absolute;
-  background-color: #f4d35e;
-  border-radius: 5px;
-  box-shadow: 0 3px 0 #c9a72c;
-}
-.dpad-v { width: 26px; height: 76px; left: 25px; top: 0; }
-.dpad-h { width: 76px; height: 26px; left: 0; top: 25px; }
-
-.action-buttons {
-  position: relative;
-  width: 120px;
-  height: 80px;
-}
-.btn-circle {
-  position: absolute;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-}
-.btn-circle.red {
-  bottom: 0;
-  right: 6px;
-  background-color: #e63946;
-  box-shadow: 0 3px 0 #9e1f29;
-}
-.btn-circle.green {
-  top: 4px;
-  right: 48px;
-  width: 24px;
-  height: 24px;
-  background-color: #2ecc71;
-  box-shadow: 0 3px 0 #1e9651;
-}
-.btn-triangle {
-  position: absolute;
-  bottom: 10px;
-  left: 2px;
-  width: 0;
-  height: 0;
-  border-left: 18px solid transparent;
-  border-right: 18px solid transparent;
-  border-bottom: 30px solid #00bbf9;
-  filter: drop-shadow(0 3px 0 #0081ad);
-}
-
-/* ============================================================================
-   RESPONSIVE OPTIMIZATION FOR POP-UP VIEW & LANDSCAPE
-   Whenever in landscape, square, or compact popup window:
-   - Hide the lower plastic toy controls completely.
-   - Expand the face screen to fill 100% of the floating window.
-   - Perfectly scale eyes, cheeks, and mouth!
-   ============================================================================ */
-
-@media (orientation: landscape), (min-aspect-ratio: 0.8), (max-height: 540px), (max-width: 420px) {
-  #bmo-controls {
-    display: none !important;
-  }
-
-  #bmo-shell {
-    max-width: none !important;
-    padding: 6px !important;
-    justify-content: center !important;
-    align-items: center !important;
-  }
-
-  #bmo-screen {
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 20px !important;
-    border-width: 5px !important;
-    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.6) !important;
-  }
-
-  #face-container {
-    width: 90% !important;
-    max-width: 600px !important;
+  #cyber-hud {
+    padding: 6px 10px 4px;
+    font-size: 10px;
   }
 }

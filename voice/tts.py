@@ -1,8 +1,8 @@
-"""Text-to-speech (TTS) output wrapper for BMO.
+"""Text-to-speech (TTS) output wrapper for ZMO.
 
 Uses `termux-tts-speak` on the Samsung Galaxy A07 and `pyttsx3` on the Windows
 laptop for local testing. Exposes `pitch` and `rate` parameters so the user can
-tune a higher, childlike BMO voice, and wraps execution in a timeout.
+tune a higher, childlike ZMO voice, and wraps execution in a timeout.
 """
 
 from __future__ import annotations

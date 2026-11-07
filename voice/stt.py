@@ -1,4 +1,4 @@
-"""Speech-to-text (STT) input wrapper for BMO.
+"""Speech-to-text (STT) input wrapper for ZMO.
 
 Uses `termux-speech-to-text` on the Samsung Galaxy A07 with a configurable
 timeout, and automatically falls back to terminal `input()` when running on

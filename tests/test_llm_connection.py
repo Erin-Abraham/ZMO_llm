@@ -25,7 +25,7 @@ def main() -> int:
     lmstudio = LMStudioClient()
     ollama = OllamaClient()
 
-    print("=== BMO LLM Connection Check ===")
+    print("=== ZMO LLM Connection Check ===")
     print(f"1. Checking LM Studio at {lmstudio.models_url} ...")
     lmstudio_up = lmstudio.is_healthy(timeout=settings.HEALTH_CHECK_TIMEOUT)
     if lmstudio_up:

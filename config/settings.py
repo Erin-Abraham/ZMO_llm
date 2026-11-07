@@ -1,4 +1,4 @@
-"""Central configuration for the BMO robot project.
+"""Central configuration for the ZMO robot project.
 
 Loads environment variables from `.env` (if present in the project root) using
 `pathlib` and the Python standard library, and exposes endpoints, model limits,
@@ -12,7 +12,7 @@ from pathlib import Path
 
 PROJECT_ROOT: Path = Path(__file__).resolve().parent.parent
 ENV_FILE_PATH: Path = PROJECT_ROOT / ".env"
-SYSTEM_PROMPT_PATH: Path = PROJECT_ROOT / "config" / "bmo_system_prompt.txt"
+SYSTEM_PROMPT_PATH: Path = PROJECT_ROOT / "config" / "zmo_system_prompt.txt"
 
 
 def _load_dotenv(env_path: Path) -> None:
@@ -134,7 +134,7 @@ USE_TEXT_INPUT: bool = os.getenv("USE_TEXT_INPUT", "false").strip().lower() in (
 
 
 def load_system_prompt() -> str:
-    """Read and return the ZMO persona system prompt from `config/bmo_system_prompt.txt`."""
+    """Read and return the ZMO persona system prompt from `config/zmo_system_prompt.txt`."""
     if SYSTEM_PROMPT_PATH.is_file():
         return SYSTEM_PROMPT_PATH.read_text(encoding="utf-8").strip()
     return (

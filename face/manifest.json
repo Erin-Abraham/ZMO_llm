@@ -4,8 +4,8 @@
   "start_url": "/index.html",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen"],
-  "background_color": "#5bc2b4",
-  "theme_color": "#5bc2b4",
+  "background_color": "#030712",
+  "theme_color": "#030712",
   "orientation": "any",
   "icons": [
     {

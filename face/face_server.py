@@ -1,4 +1,4 @@
-"""Tiny offline HTTP server for BMO's face (`face/`).
+"""Tiny offline HTTP server for ZMO's face (`face/`).
 
 Serves `index.html`, `face.css`, and `face.js` from the `face/` directory and
 exposes:
@@ -26,7 +26,7 @@ from config import settings
 
 
 class FaceStateStore:
-    """Thread-safe holder for BMO's current face state, emotion, and backend mode."""
+    """Thread-safe holder for ZMO's current face state, emotion, and backend mode."""
 
     def __init__(self) -> None:
         self._lock = threading.Lock()
@@ -56,7 +56,7 @@ class FaceStateStore:
 STATE_STORE = FaceStateStore()
 
 
-class BMOJFaceRequestHandler(SimpleHTTPRequestHandler):
+class ZMOFaceRequestHandler(SimpleHTTPRequestHandler):
     """HTTP handler serving static files in `face/` plus `GET/POST /state`."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -107,9 +107,9 @@ class BMOJFaceRequestHandler(SimpleHTTPRequestHandler):
 
 
 def run_server(host: str = settings.FACE_HOST, port: int = settings.FACE_PORT) -> None:
-    """Start the threaded HTTP server for BMO's face."""
-    server = ThreadingHTTPServer((host, port), BMOJFaceRequestHandler)
-    print(f"[face_server] Serving BMO face at http://{host}:{port}")
+    """Start the threaded HTTP server for ZMO's face."""
+    server = ThreadingHTTPServer((host, port), ZMOFaceRequestHandler)
+    print(f"[face_server] Serving ZMO face at http://{host}:{port}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
@@ -120,7 +120,7 @@ def run_server(host: str = settings.FACE_HOST, port: int = settings.FACE_PORT) -
 
 def main() -> int:
     """CLI entry point for `face_server.py`."""
-    parser = argparse.ArgumentParser(description="Start the BMO face HTTP server.")
+    parser = argparse.ArgumentParser(description="Start the ZMO face HTTP server.")
     parser.add_argument("--host", default=settings.FACE_HOST, help="Bind host address.")
     parser.add_argument(
         "--port", type=int, default=settings.FACE_PORT, help="Bind port (default 8080)."

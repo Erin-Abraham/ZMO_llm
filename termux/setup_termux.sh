@@ -13,7 +13,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 echo "============================================================"
-echo "  BMO Robot - Termux Setup (Samsung Galaxy A07)"
+echo "  ZMO Robot - Termux Setup (Samsung Galaxy A07)"
 echo "  NOTE: Ensure Termux, Termux:API & Termux:Boot are from F-Droid!"
 echo "============================================================"
 
@@ -53,16 +53,16 @@ if [ ! -f "${PROJECT_DIR}/.env" ]; then
   echo ">>> ACTION REQUIRED: Edit .env and set LAPTOP_IP to your Windows laptop Wi-Fi IP! <<<"
 fi
 
-echo "[6/6] Installing start_bmo.sh into ~/.termux/boot/ for Termux:Boot..."
+echo "[6/6] Installing start_zmo.sh into ~/.termux/boot/ for Termux:Boot..."
 mkdir -p "${HOME}/.termux/boot"
-cp "${SCRIPT_DIR}/start_bmo.sh" "${HOME}/.termux/boot/start_bmo.sh"
-chmod +x "${SCRIPT_DIR}/start_bmo.sh" "${HOME}/.termux/boot/start_bmo.sh"
+cp "${SCRIPT_DIR}/start_zmo.sh" "${HOME}/.termux/boot/start_zmo.sh"
+chmod +x "${SCRIPT_DIR}/start_zmo.sh" "${HOME}/.termux/boot/start_zmo.sh"
 
 echo "============================================================"
 echo "  Setup complete!"
 echo "  1. Edit ${PROJECT_DIR}/.env with your LAPTOP_IP."
 echo "  2. Plug in your external mic and verify Termux:API has Microphone permission."
 echo "  3. Open the Termux:Boot app once so Android registers boot startup."
-echo "  4. Run: bash termux/start_bmo.sh"
-echo "  5. Manually open Chrome to http://localhost:8080 and tap for fullscreen."
+echo "  4. Run: bash termux/start_zmo.sh"
+echo "  5. Open Chrome to http://localhost:8080 and install the ZMO app!"
 echo "============================================================"

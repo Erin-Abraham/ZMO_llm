@@ -48,7 +48,7 @@ class SimulatedOfflineLMStudio(LMStudioClient):
     ) -> str:
         if not self.online:
             raise RuntimeError("Laptop is offline")
-        return "[happy] Beep boop! Big brain BMO is ready to play!"
+        return "[happy] Beep boop! Big brain ZMO is ready to play!"
 
 
 class SimulatedLocalOllama(OllamaClient):
@@ -72,7 +72,7 @@ class SimulatedLocalOllama(OllamaClient):
 
 def run_tests() -> bool:
     """Execute all router fallback, tag extraction, and history trimming assertions."""
-    print("=== BMO Router Fallback Test (Laptop Offline Simulation) ===")
+    print("=== ZMO Router Fallback Test (Laptop Offline Simulation) ===")
 
     lm_stub = SimulatedOfflineLMStudio()
     ollama_stub = SimulatedLocalOllama()
@@ -84,7 +84,7 @@ def run_tests() -> bool:
     )
 
     # 1. Laptop is offline -> must select "ollama" and announce laptop down
-    res1 = router.route_message("Hello BMO!")
+    res1 = router.route_message("Hello ZMO!")
     assert res1.backend == "ollama", f"Expected 'ollama', got {res1.backend!r}"
     assert res1.mode == "offline", f"Expected mode 'offline', got {res1.mode!r}"
     assert (
@@ -126,7 +126,7 @@ def run_tests() -> bool:
     emo_thk, _ = extract_emotion_and_clean_text("Where did Jake hide the batteries?")
     assert emo_thk == "thinking"
 
-    emo_neu, _ = extract_emotion_and_clean_text("BMO is a real living boy.")
+    emo_neu, _ = extract_emotion_and_clean_text("ZMO is a real living robot.")
     assert emo_neu == "neutral"
     print("[OK] Step 4: Emotion tag parser and keyword fallback verified.")
 
@@ -134,7 +134,7 @@ def run_tests() -> bool:
     for i in range(30):
         history.add_turn(
             f"User question number {i} with extra padding words to consume token budget.",
-            f"[happy] BMO answer number {i} with extra cheerful words and beep boop!",
+            f"[happy] ZMO answer number {i} with extra cheerful words and beep boop!",
         )
     ollama_msgs = history.build_ollama_messages("Final question?")
     laptop_msgs = history.build_laptop_messages("Final question?")

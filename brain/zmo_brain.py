@@ -1,11 +1,10 @@
-"""Main orchestration loop for BMO: listen -> think -> speak -> move.
+"""Main orchestration loop for ZMO: listen -> think -> speak.
 
 Coordinates:
 1. Face state updates (`POST /state` to `face_server.py`)
 2. Speech/text input (`voice/stt.py`)
 3. LLM routing & emotion extraction (`brain/llm_router.py`)
-4. ESP32-C3 servo gestures over Wi-Fi HTTP (`POST http://<ESP32_IP>/gesture`)
-5. Voice synthesis (`voice/tts.py`)
+4. Voice synthesis (`voice/tts.py`)
 """
 
 from __future__ import annotations

@@ -40,24 +40,24 @@ bmo-robot/
 ├── .gitignore
 ├── config/
 │   ├── settings.py                # loads .env, holds URLs, timeouts, limits
-│   └── bmo_system_prompt.txt      # BMO persona prompt (see section 4)
+│   └── zmo_system_prompt.txt      # ZMO persona prompt (see section 4)
 ├── brain/
 │   ├── llm_router.py              # health check + automatic fallback
 │   ├── lmstudio_client.py         # OpenAI-style client for LM Studio
 │   ├── ollama_client.py           # /api/chat client for Ollama
 │   ├── conversation.py            # history trimming per backend context size
-│   └── bmo_brain.py               # main loop: listen -> think -> speak -> move
+│   └── zmo_brain.py               # main loop: listen -> think -> speak
 ├── voice/
 │   ├── stt.py                     # speech to text (Termux:API on phone)
 │   └── tts.py                     # text to speech (termux-tts-speak, pyttsx3 on laptop for testing)
 ├── face/
-│   ├── index.html                 # animated ZMO face, portrait layout
+│   ├── index.html                 # animated ZMO futuristic pixel art face
 │   ├── face.css
 │   ├── face.js                    # states + emotions, polls /state
 │   └── face_server.py             # tiny HTTP server: serves face, exposes /state
 ├── termux/
 │   ├── setup_termux.sh            # one-shot phone setup
-│   └── start_bmo.sh               # launched by Termux:Boot with --standby wake-word loop
+│   └── start_zmo.sh               # launched by Termux:Boot with --standby wake-word loop
 ├── cad/
 │   └── dimensions.md              # A07 size, slot size, mic clearance for Blender
 ├── tests/
@@ -138,9 +138,9 @@ If the tag is missing (TinyLlama often forgets), fall back to keyword matching
 
 ### 5.5 Termux (termux/)
 - `setup_termux.sh`: `pkg update`, install python, git, termux-api, ollama; `pip install requests`;
-  `ollama pull tinyllama`; create the Termux:Boot folder and copy `start_bmo.sh`.
-- `start_bmo.sh`: `termux-wake-lock`, start `ollama serve` in the background, start `face_server.py`,
-  then `bmo_brain.py`. Open Chrome to `http://localhost:8080` is a manual step, say so.
+  `ollama pull tinyllama`; create the Termux:Boot folder and copy `start_zmo.sh`.
+- `start_zmo.sh`: `termux-wake-lock`, start `ollama serve` in the background, start `face_server.py`,
+  then `zmo_brain.py`. Open Chrome to `http://localhost:8080` is a manual step, say so.
 - The user must install Termux, Termux:API and Termux:Boot from F-Droid, not the Play Store.
 
 ### 5.6 Tests (tests/)
